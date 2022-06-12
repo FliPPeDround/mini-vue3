@@ -2,17 +2,26 @@ import { describe, expect, it } from 'vitest'
 import { effect, reactive } from '../src'
 
 describe('响应式测试', () => {
-  it('', () => {
-    const obj = reactive({
-      name: 'mini-vue',
-    })
-    let foo: string
-    effect(() => {
-      foo = obj.name
-    })
+  const obj = reactive({
+    text: 'mini-vue',
+    age: 1,
+  })
+  let foo: string
+  let bar: number
+  effect(() => {
+    obj.age = 2
+    foo = obj.text
+    bar = obj.age
+  })
+
+  it('基本测试', () => {
     expect(foo).toBe('mini-vue')
-    obj.name = 'vue'
+    obj.text = 'vue'
     expect(foo).toBe('vue')
+  })
+
+  it('无限调用', () => {
+    expect(bar).toBe(2)
   })
 })
 
