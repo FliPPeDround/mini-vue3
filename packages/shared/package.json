@@ -1,0 +1,16 @@
+{
+  "name": "@vue/shared",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
+  "buildOptions": {
+    "name": "VueShared",
+    "format": [
+      "cjs",
+      "esm"
+    ]
+  }
+}
