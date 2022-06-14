@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effect, reactive } from '../src'
+import { computed, effect, reactive, watch } from '@vue/reactivity'
 
 describe('响应式测试', () => {
   const obj = reactive({
@@ -95,5 +95,51 @@ describe('计算属性', () => {
     a.value = 3
     expect(c.value).toBe(5)
     expect(foo).toBe(5)
+  })
+})
+
+describe('数据监听', () => {
+  it('数据监听', () => {
+    const a = reactive({
+      value: 1,
+    })
+    let foo: string
+    watch(
+      () => a.value,
+      (newValue: number, oldValue: number) => {
+        foo = `${newValue} -> ${oldValue}`
+      },
+    )
+    a.value = 2
+    expect(foo).toBe(`${a.value} -> 1`)
+  })
+
+  it('cleanup', async () => {
+    const data = reactive({
+      value: 1,
+    })
+    let i = 2000
+    function getData(timer: number) {
+      return new Promise((resolve, _reject) => {
+        setTimeout(() => {
+          resolve(timer)
+        }, timer)
+      })
+    }
+
+    watch(
+      () => data.value,
+      async (newValue: number, oldValue: number, cleanup: Function) => {
+        let clear = false
+        cleanup(() => {
+          clear = true
+        })
+        i -= 1000
+        if (!clear)
+          await expect(getData(i)).resolves.toBe(0)
+      },
+    )
+    data.value = 2
+    data.value = 3
   })
 })
