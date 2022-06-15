@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effect, reactive, watch } from '@vue/reactivity'
+import { computed, effect, proxyRefs, reactive, ref, watch } from '@vue/reactivity'
 
 describe('响应式测试', () => {
   const obj = reactive({
@@ -139,7 +139,33 @@ describe('数据监听', () => {
           await expect(getData(i)).resolves.toBe(0)
       },
     )
-    data.value = 2
-    data.value = 3
+  })
+})
+
+describe('ref测试', () => {
+  it('ref', () => {
+    const flag = ref(true)
+    let foo: 'true' | 'false'
+    effect(() => {
+      foo = flag.value ? 'true' : 'false'
+    })
+    expect(foo).toBe('true')
+    flag.value = false
+    expect(foo).toBe('false')
+  })
+  it('代理ref', () => {
+    const foo = ref(1)
+    const bar = ref(2)
+    const data = proxyRefs({
+      foo,
+      bar,
+    })
+    let newData: number
+    effect(() => {
+      newData = (data as { foo: number; bar: number }).foo + (data as { foo: number; bar: number }).bar
+    })
+    expect(newData).toBe(3)
+    foo.value = 3
+    expect(newData).toBe(5)
   })
 })
