@@ -1,4 +1,4 @@
-import { isFunction } from './../../shared/src/index'
+import { isFunction } from '@vue/shared'
 import { ReactiveEffect, trackEffects, triggerEffects } from './effect'
 
 class ComputedRefImpl {

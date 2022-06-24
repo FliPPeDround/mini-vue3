@@ -1,8 +1,9 @@
 // eslint-disable-next-line import/no-mutable-exports
 export let activeEffect: ReactiveEffect
 
-function cleanupEffect(effect) {
+function cleanupEffect(effect: ReactiveEffect) {
   const { deps } = effect
+
   for (let i = 0; i < deps.length; i++)
     deps[i].delete(effect)
   effect.deps.length = 0
@@ -21,7 +22,6 @@ export class ReactiveEffect {
   run() {
     if (!this.active)
       return
-    this.fn()
     try {
       this.parent = activeEffect
       // eslint-disable-next-line @typescript-eslint/no-this-alias

@@ -1,4 +1,4 @@
-import { isObject } from './../../shared/src/index'
+import { isObject } from '@vue/shared'
 import { track, trigger } from './effect'
 import { reactive } from './reactive'
 

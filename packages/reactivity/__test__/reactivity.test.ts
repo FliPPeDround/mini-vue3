@@ -53,11 +53,17 @@ describe('分支切换', () => {
       foo = data.flag ? data.text : 'vue'
     })
     effect(fn)
-    expect(fn).toHaveBeenCalledTimes(2)
+    expect(fn).toHaveBeenCalledTimes(1)
     expect(foo).toBe('mini-vue')
     data.text = 'mini-vue3'
-    expect(fn).toHaveBeenCalledTimes(4)
+    expect(fn).toHaveBeenCalledTimes(2)
     expect(foo).toBe('mini-vue3')
+    data.flag = false
+    expect(fn).toHaveBeenCalledTimes(3)
+    expect(foo).toBe('vue')
+    data.text = 'mini-vue'
+    expect(fn).toHaveBeenCalledTimes(3)
+    expect(foo).toBe('vue')
   })
 })
 
@@ -169,3 +175,4 @@ describe('ref测试', () => {
     expect(newData).toBe(5)
   })
 })
+
